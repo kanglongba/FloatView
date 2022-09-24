@@ -15,4 +15,23 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="显示龙珠"
+        android:id="@+id/showBall"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"/>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="隐藏龙珠"
+        android:id="@+id/hideBall"
+        android:layout_marginTop="10dp"
+        app:layout_constraintTop_toBottomOf="@id/showBall"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
