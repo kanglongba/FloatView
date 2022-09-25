@@ -15,4 +15,12 @@ public interface DebugPanelConstant {
         String PROXY_HTTP_URL = "pro_http_url";
     }
 
+    interface NotificationConfig {
+        String CHANNEL_ID = "array_debug_panel";
+        String CHANNEL_NAME = "dragon_ball";
+        String CHANNEL_DESCRIPTION = "for array debug";
+        String CONTENT_TITLE = "Dragon Ball";
+        String CONTENT_TEXT = "Array Debug Panel";
+    }
+
 }

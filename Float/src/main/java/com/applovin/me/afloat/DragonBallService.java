@@ -97,7 +97,7 @@ public class DragonBallService extends Service {
         dragonBall.setOnTouchListener(new FloatingOnTouchListener(windowManager, layoutParams));
         dragonBall.setOnClickListener(v -> {
             Intent intent = new Intent();
-            intent.setAction("com.applovin.me.afloat.DebugSettingActivity");
+            intent.setAction(DebugSettingActivity.ACTION);
             intent.setPackage(getPackageName());
             intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);

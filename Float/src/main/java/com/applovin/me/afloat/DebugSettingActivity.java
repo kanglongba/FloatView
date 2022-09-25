@@ -5,9 +5,9 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.security.NetworkSecurityPolicy;
 import android.text.TextUtils;
 import android.view.View;
-import android.view.Window;
 import android.view.WindowInsets;
 import android.widget.Toast;
 
@@ -18,13 +18,17 @@ import androidx.core.view.WindowInsetsControllerCompat;
 
 import com.applovin.me.afloat.databinding.ActivityDebugSettingBinding;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+
 /**
  * 开源图标：https://fonts.google.com/icons?selected=Material+Icons
  * SwitchCompat：https://www.jianshu.com/p/85f9ac2303e7
- *
  */
 public class DebugSettingActivity extends AppCompatActivity {
     private static final int OVERLAY_PERMISSION_REQUEST_CODE = 220923;
+    private static final String TAG = "DebugSetting";
+    public static final String ACTION = "com.applovin.me.afloat.DebugSettingActivity";
 
     private ActivityDebugSettingBinding binding;
 
@@ -80,6 +84,7 @@ public class DebugSettingActivity extends AppCompatActivity {
             }
         });
         binding.proxySwitch.setOnCheckedChangeListener((compoundButton, checked) -> {
+            setCleartextTrafficPermitted(checked);
             ConfigManager.get().setEnableProxy(checked);
             showProxyLayout(checked);
         });
@@ -91,6 +96,40 @@ public class DebugSettingActivity extends AppCompatActivity {
                 ToastUtil.show("ip地址已保存");
             }
         });
+    }
+
+    /**
+     * 开启支持Http
+     * 参考文章
+     * 1.https://developer.android.google.cn/training/articles/security-config.html#CleartextTrafficPermitted
+     * 2.https://www.jianshu.com/p/11992edd61e7
+     * 从API 28开始，系统默认情况下已停用明文支持。
+     * 从API 23开始，系统添加了NetworkSecurityPolicy类。
+     * NetworkSecurityPolicy
+     *
+     * @param permitted
+     */
+    private void setCleartextTrafficPermitted(boolean permitted) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            try {
+                Class<?> clazz = Class.forName("android.security.NetworkSecurityPolicy");
+                Method method = clazz.getMethod("setCleartextTrafficPermitted", Boolean.class);
+                method.setAccessible(true);
+                method.invoke(NetworkSecurityPolicy.getInstance(), permitted);
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+                PLog.e(TAG, "ClassNotFoundException");
+            } catch (NoSuchMethodException e) {
+                e.printStackTrace();
+                PLog.e(TAG, "NoSuchMethodException");
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+                PLog.e(TAG, "IllegalAccessException");
+            } catch (InvocationTargetException e) {
+                e.printStackTrace();
+                PLog.e(TAG, "InvocationTargetException");
+            }
+        }
     }
 
     private void showProxyLayout(boolean isShow) {

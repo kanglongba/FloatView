@@ -7,6 +7,8 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Build;
 import android.provider.Settings;
 
@@ -63,7 +65,7 @@ public class DebugPanel {
      */
     public static void showNotify(Context context) {
         Intent intent = new Intent();
-        intent.setAction("com.applovin.me.afloat.DebugSettingActivity");
+        intent.setAction(DebugSettingActivity.ACTION);
         intent.setPackage(context.getPackageName());
         intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(context,
@@ -71,15 +73,25 @@ public class DebugPanel {
                 intent,
                 PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
 
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "DebugPanel")
+        Uri uri = Uri.parse("https://zh.wikipedia.org/wiki/%E4%B8%83%E9%BE%99%E7%8F%A0");
+        Intent openUrl = new Intent(Intent.ACTION_VIEW, uri);
+        PendingIntent openIntent = PendingIntent.getActivity(context,
+                0,
+                openUrl,
+                0);
+
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(context, DebugPanelConstant.NotificationConfig.CHANNEL_ID)
                 .setSmallIcon(R.drawable.ball)
-                .setContentTitle("DebugPanel")
-                .setContentText("debug")
+                .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.goku))
+                .setContentTitle(DebugPanelConstant.NotificationConfig.CONTENT_TITLE)
+                .setContentText(DebugPanelConstant.NotificationConfig.CONTENT_TEXT)
                 .setContentIntent(pendingIntent)
                 // true，Notification点击后消失；false，点击后不消失
                 .setAutoCancel(false)
                 // true，用户不能滑动移除Notification，也不能使用通知栏的清除键移除通知，只能通过代码调用cancel方法移除
                 .setOngoing(true)
+                // 添加操作按钮
+//                .addAction(R.drawable.ic_baseline_favorite_24, "make a wish", openIntent)
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT);
 
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
@@ -91,10 +103,10 @@ public class DebugPanel {
         // Create the NotificationChannel, but only on API 26+ because
         // the NotificationChannel class is new and not in the support library
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            CharSequence name = "DragonBall";
-            String description = "ball";
+            CharSequence name = DebugPanelConstant.NotificationConfig.CHANNEL_NAME;
+            String description = DebugPanelConstant.NotificationConfig.CHANNEL_DESCRIPTION;
             int importance = NotificationManager.IMPORTANCE_DEFAULT;
-            NotificationChannel channel = new NotificationChannel("DebugPanel", name, importance);
+            NotificationChannel channel = new NotificationChannel(DebugPanelConstant.NotificationConfig.CHANNEL_ID, name, importance);
             channel.setDescription(description);
             // Register the channel with the system; you can't change the importance
             // or other notification behaviors after this
