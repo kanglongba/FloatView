@@ -24,6 +24,8 @@ import androidx.core.app.NotificationManagerCompat;
  * 通知栏参考文章：
  * 1.https://developer.android.com/training/notify-user/build-notification?hl=zh-cn
  * 2.https://bbs.huaweicloud.com/blogs/362305
+ * 依赖树配置：
+ * 1.https://developer.android.com/studio/build/dependencies?hl=zh-cn
  *
  * @Author: edison qian
  * @Email: edison.qian@applovin.com
