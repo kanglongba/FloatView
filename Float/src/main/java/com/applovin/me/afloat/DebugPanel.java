@@ -80,13 +80,14 @@ public class DebugPanel {
         PendingIntent openIntent = PendingIntent.getActivity(context,
                 0,
                 openUrl,
-                0);
+                PendingIntent.FLAG_IMMUTABLE);
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, DebugPanelConstant.NotificationConfig.CHANNEL_ID)
                 .setSmallIcon(R.drawable.ball)
+                .setSubText("edison")
                 .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.goku))
                 .setContentTitle(DebugPanelConstant.NotificationConfig.CONTENT_TITLE)
-                .setContentText(DebugPanelConstant.NotificationConfig.CONTENT_TEXT)
+                .setContentText(DebugPanelConstant.NotificationConfig.CONTENT_TEXT + application.getPackageName())
                 .setContentIntent(pendingIntent)
                 // true，Notification点击后消失；false，点击后不消失
                 .setAutoCancel(false)

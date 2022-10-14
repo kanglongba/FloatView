@@ -20,7 +20,7 @@ public interface DebugPanelConstant {
         String CHANNEL_NAME = "dragon_ball";
         String CHANNEL_DESCRIPTION = "for array debug";
         String CONTENT_TITLE = "Dragon Ball";
-        String CONTENT_TEXT = "Array Debug Panel";
+        String CONTENT_TEXT = "Array Debug - ";
     }
 
 }

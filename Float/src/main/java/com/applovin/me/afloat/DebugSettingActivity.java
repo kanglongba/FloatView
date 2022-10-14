@@ -38,7 +38,7 @@ public class DebugSettingActivity extends AppCompatActivity {
         //requestWindowFeature(Window.FEATURE_NO_TITLE); //没有效果
         binding = ActivityDebugSettingBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        getSupportActionBar().hide(); //隐藏titleBar，有用
+        getSupportActionBar().hide(); //隐藏titleBar，有用，但是推荐通过Theme做
         initViews();
         initClick();
     }
@@ -100,11 +100,20 @@ public class DebugSettingActivity extends AppCompatActivity {
 
     /**
      * 开启支持Http
+     * 从API 28开始，系统默认情况下已停用明文支持。
+     * 从API 23开始，系统添加了NetworkSecurityPolicy类。
      * 参考文章
      * 1.https://developer.android.google.cn/training/articles/security-config.html#CleartextTrafficPermitted
      * 2.https://www.jianshu.com/p/11992edd61e7
-     * 从API 28开始，系统默认情况下已停用明文支持。
-     * 从API 23开始，系统添加了NetworkSecurityPolicy类。
+     * 3.https://www.cnblogs.com/renhui/p/14214996.html
+     * 4.https://blog.csdn.net/firedancer0089/article/details/82969969
+     *
+     * Android P对反射调用隐藏api做了限制，无法反射得到setCleartextTrafficPermitted方法
+     * 1.https://www.cnblogs.com/renhui/p/14214996.html
+     * 2.现有的突破方案，实践都不行：https://github.com/tiann/FreeReflection
+     *
+     * 通过反射不能达到目的，只能在network_security_config.xml文件中配置规则
+     *
      * NetworkSecurityPolicy
      *
      * @param permitted
