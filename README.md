@@ -10,9 +10,9 @@
 ## 效果
 1. 启动时发送一个Notification
 
-![first](./screenshot/first.png)  
+![first](https://github.com/kanglongba/FloatView/blob/master/screenshot/first.png)  
    
-![second](./screenshot/second.png)
+![second](https://github.com/kanglongba/FloatView/blob/master/screenshot/second.png)
 
 2. 点击Notification，跳转到调试页面
    
@@ -20,4 +20,4 @@
 
 3. 打开悬浮球，显示一个龙珠
 
-![four](./screenshot/four.png)
+![four](https://github.com/kanglongba/FloatView/blob/master/screenshot/four.png)
