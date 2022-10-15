@@ -1,6 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.hangzhou.me.floatview">
+
+    <!-- Android 13 注册通知权限 -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <!--  如果您在 Google Play 上发布应用，那么应用使用QUERY_ALL_PACKAGES权限需要获得批准  -->
+    <uses-permission
+        android:name="android.permission.QUERY_ALL_PACKAGES"
+        tools:ignore="QueryAllPackagesPermission" />
+    <!-- 在Android 11及以后，系统限制了查询设备上已安装的其他应用的权限。这会影响某些查询方法的返回结果。如果有查询需要，必须使用<queries>元素声明 -->
+    <!-- <queries>与QUERY_ALL_PACKAGES权限，二者声明其一即可-->
+    <queries>
+        <!-- Specific apps you interact with, eg: -->
+        <package android:name="com.alibaba.aliexpresshd" />
+        <package android:name="com.tencent.edison.router" />
+        <!--
+             Specific intents you query for,
+             eg: for a custom share UI
+        -->
+        <intent>
+            <action android:name="android.intent.action.SEND" />
+            <data android:mimeType="image/jpeg" />
+        </intent>
+    </queries>
 
     <application
         android:name="com.hangzhou.me.floatview.MyApplication"

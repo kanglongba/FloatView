@@ -6,15 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -27,8 +18,8 @@
     <androidx.appcompat.widget.AppCompatButton
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="隐藏龙珠"
-        android:id="@+id/hideBall"
+        android:text="发送Notification"
+        android:id="@+id/sendNotification"
         android:layout_marginTop="10dp"
         app:layout_constraintTop_toBottomOf="@id/showBall"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -38,9 +29,49 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="打开应用设置"
-        android:id="@+id/startDemoBtn"
+        android:id="@+id/startSettingBtn"
         android:layout_marginTop="10dp"
-        app:layout_constraintTop_toBottomOf="@id/hideBall"
+        app:layout_constraintTop_toBottomOf="@id/sendNotification"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"/>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="动态注册广播"
+        android:id="@+id/registerBtn"
+        android:layout_marginTop="10dp"
+        app:layout_constraintTop_toBottomOf="@id/startSettingBtn"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"/>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="发送广播"
+        android:id="@+id/sendBtn"
+        android:layout_marginTop="10dp"
+        app:layout_constraintTop_toBottomOf="@id/registerBtn"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"/>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="通过包名打开其他App的页面"
+        android:id="@+id/openBtn"
+        android:layout_marginTop="10dp"
+        app:layout_constraintTop_toBottomOf="@id/sendBtn"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"/>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="请求通知权限"
+        android:id="@+id/grantNotificationBtn"
+        android:layout_marginTop="10dp"
+        app:layout_constraintTop_toBottomOf="@id/openBtn"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"/>
 
