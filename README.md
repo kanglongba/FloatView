@@ -10,7 +10,7 @@
 ## 效果
 1. 启动时发送一个Notification
 
-![first](https://github.com/kanglongba/FloatView/blob/master/screenshot/first.png)  
+![first](./screenshot/first.png)  
    
 ![second](https://github.com/kanglongba/FloatView/blob/master/screenshot/second.png)
 
