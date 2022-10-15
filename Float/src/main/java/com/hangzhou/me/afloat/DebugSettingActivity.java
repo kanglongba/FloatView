@@ -103,7 +103,7 @@ public class DebugSettingActivity extends AppCompatActivity {
      * 从API 28开始，系统默认情况下已停用明文支持。
      * 从API 23开始，系统添加了NetworkSecurityPolicy类。
      * 参考文章
-     * 1.https://developer.android.google.cn/training/articles/security-config.html#CleartextTrafficPermitted
+     * 1.https://developer.android.com/training/articles/security-config?hl=zh-cn
      * 2.https://www.jianshu.com/p/11992edd61e7
      * 3.https://www.cnblogs.com/renhui/p/14214996.html
      * 4.https://blog.csdn.net/firedancer0089/article/details/82969969
@@ -112,7 +112,8 @@ public class DebugSettingActivity extends AppCompatActivity {
      * 1.https://www.cnblogs.com/renhui/p/14214996.html
      * 2.现有的突破方案，实践都不行：https://github.com/tiann/FreeReflection
      *
-     * 通过反射不能达到目的，只能在network_security_config.xml文件中配置规则
+     * 通过反射不能达到目的，只能在network_security_config.xml文件中配置规则，或者在application中设置 android:usesCleartextTraffic="true"。
+     * 关于usesCleartextTraffic属性的说明：https://developer.android.google.cn/guide/topics/manifest/application-element#usesCleartextTraffic
      *
      * NetworkSecurityPolicy
      *
