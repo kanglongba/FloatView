@@ -6,7 +6,7 @@ android {
     compileSdk 32
 
     defaultConfig {
-        applicationId "com.applovin.me.floatview"
+        applicationId "com.hangzhou.me.floatview"
         minSdk 28
         targetSdk 33
         versionCode 1

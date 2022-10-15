@@ -1,27 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.applovin.me.afloat">
+    package="com.hangzhou.me.afloat">
 
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
     <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES"/>
 
     <application>
         <activity
-            android:name=".DebugSettingActivity"
+            android:name="com.hangzhou.me.afloat.DebugSettingActivity"
             android:exported="false">
             <intent-filter>
-                <action android:name="com.applovin.me.afloat.DebugSettingActivity" />
+                <action android:name="com.hangzhou.me.afloat.DebugSettingActivity" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
 
         <service
-            android:name=".DragonBallService"
+            android:name="com.hangzhou.me.afloat.DragonBallService"
             android:enabled="true"
             android:exported="true" >
             <intent-filter>
-                <action android:name="com.applovin.me.afloat.DragonBallService" />
+                <action android:name="com.hangzhou.me.afloat.DragonBallService" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>

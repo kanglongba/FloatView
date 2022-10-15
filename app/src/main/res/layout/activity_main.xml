@@ -37,7 +37,7 @@
     <androidx.appcompat.widget.AppCompatButton
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="启动Intent"
+        android:text="打开应用设置"
         android:id="@+id/startDemoBtn"
         android:layout_marginTop="10dp"
         app:layout_constraintTop_toBottomOf="@id/hideBall"
