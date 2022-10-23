@@ -12,6 +12,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.security.NetworkSecurityPolicy;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -47,6 +48,7 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         onClick();
+        isCleartextTrafficPermitted();
     }
 
     private void onClick() {
@@ -200,5 +202,16 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
                 ToastUtil.show("用户拒绝通知权限");
             }
         }
+    }
+
+    /**
+     * 1.经过对比：android:usesCleartextTraffic="true" 比 android:networkSecurityConfig="@xml/network_security_config" 优先级低
+     * 二者同时设置，android:usesCleartextTraffic="true" 会无效。
+     * 2.使用其他方module的配置文件，如debug_network_security_config.xml，也不行，因为多个xml文件只有一个能生效。最终会被app的模块的xml文件替换
+     */
+    private void isCleartextTrafficPermitted() {
+        Log.d("edison", "是否允许明文传输：" + NetworkSecurityPolicy.getInstance().isCleartextTrafficPermitted());
+        Log.d("edison", "是否允许192.168.230.56明文传输：" + NetworkSecurityPolicy.getInstance().isCleartextTrafficPermitted("192.168.230.56"));
+        Log.d("edison", "是否允许192.168.230.57明文传输：" + NetworkSecurityPolicy.getInstance().isCleartextTrafficPermitted("192.168.230.57"));
     }
 }
