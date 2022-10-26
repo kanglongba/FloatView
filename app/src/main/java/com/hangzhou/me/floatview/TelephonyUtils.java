@@ -53,17 +53,17 @@ public class TelephonyUtils {
             return countryCode.toUpperCase(Locale.ENGLISH);
         }
 
+        countryCode = MccTable.countryCodeForMcc(context.getResources().getConfiguration().mcc);
+        if (!TextUtils.isEmpty(countryCode)) {
+            return countryCode.toUpperCase(Locale.ENGLISH);
+        }
+
         // 网络模式是CDMA时，getNetworkCountryIso方法不可靠，因此要分别处理
         if (telephonyManager.getPhoneType() == TelephonyManager.PHONE_TYPE_CDMA) {
             countryCode = getCDMACountryIso();
         } else {
             countryCode = telephonyManager.getNetworkCountryIso();
         }
-        if (!TextUtils.isEmpty(countryCode)) {
-            return countryCode.toUpperCase(Locale.ENGLISH);
-        }
-
-        countryCode = MccTable.countryCodeForMcc(context.getResources().getConfiguration().mcc);
         if (!TextUtils.isEmpty(countryCode)) {
             return countryCode.toUpperCase(Locale.ENGLISH);
         }
