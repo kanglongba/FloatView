@@ -27,6 +27,7 @@ public class TelephonyUtils {
      * 4.https://www.jianshu.com/p/4317d60a90fd
      * 5.Android国际化总结：https://ansuote.github.io/2017/08/24/Android%20%E5%9B%BD%E9%99%85%E5%8C%96%E6%80%BB%E7%BB%93/
      * 6.Google的开源库：https://github.com/google/libphonenumber
+     * 7.https://stackoverflow.com/questions/26971806/unexpected-telephonymanager-getsimcountryiso-behaviour
      *
      * @param context
      * @return
