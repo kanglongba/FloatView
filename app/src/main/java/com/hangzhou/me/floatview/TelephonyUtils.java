@@ -12,8 +12,7 @@ import java.lang.reflect.Method;
 import java.util.Locale;
 
 /**
- * @Author: edison qian
- * @Email: edison.qian@applovin.com
+ * @Author: edison
  * @CreateDate: 2022/10/25 21:26
  * @Description:
  */

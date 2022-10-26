@@ -12,8 +12,7 @@ import java.util.Objects;
 
 /**
  * copy from com.android.internal.telephony.MccTable
- * @Author: edison qian
- * @Email: edison.qian@applovin.com
+ * @Author: edison
  * @CreateDate: 2022/10/26 10:13
  * @Description:
  */
