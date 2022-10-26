@@ -80,6 +80,9 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
         binding.grantNotificationBtn.setOnClickListener(v -> {
             requestNotificationPermission(MainActivity.this);
         });
+        binding.countryCodeBtn.setOnClickListener(v -> {
+            Log.d("edison",  "countryCode=" + TelephonyUtils.getCountryCode(MainActivity.this));
+        });
     }
 
     /**
