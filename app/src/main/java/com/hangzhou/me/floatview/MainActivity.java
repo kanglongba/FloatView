@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.ActivityInfo;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
@@ -25,6 +26,9 @@ import androidx.core.app.NotificationManagerCompat;
 import com.hangzhou.me.afloat.DebugPanel;
 import com.hangzhou.me.afloat.ToastUtil;
 import com.hangzhou.me.floatview.databinding.ActivityMainBinding;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.Collections;
 import java.util.List;
@@ -82,6 +86,9 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
         });
         binding.countryCodeBtn.setOnClickListener(v -> {
             Log.d("edison",  "countryCode=" + TelephonyUtils.getCountryCode(MainActivity.this));
+        });
+        binding.queryApp.setOnClickListener(v -> {
+            Log.d("edison", "queryApp=" + getAppInfo("com.zhiliaoapp.musically"));
         });
     }
 
@@ -216,5 +223,28 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
         Log.d("edison", "是否允许明文传输：" + NetworkSecurityPolicy.getInstance().isCleartextTrafficPermitted());
         Log.d("edison", "是否允许192.168.230.56明文传输：" + NetworkSecurityPolicy.getInstance().isCleartextTrafficPermitted("192.168.230.56"));
         Log.d("edison", "是否允许192.168.230.57明文传输：" + NetworkSecurityPolicy.getInstance().isCleartextTrafficPermitted("192.168.230.57"));
+    }
+
+    /**
+     * com.applovin.array.apphub.samsung
+     * com.zhiliaoapp.musically
+     * @param packageName
+     * @return
+     */
+    private String getAppInfo(String packageName) {
+        try {
+            JSONObject jsonObject = new JSONObject();
+            JSONObject appInfo = new JSONObject();
+            PackageInfo packageInfo = getPackageManager().getPackageInfo(packageName, 0);
+            appInfo.put("package_name", packageInfo.packageName);
+            appInfo.put("version_code", packageInfo.getLongVersionCode());
+            jsonObject.put("app_info", appInfo);
+            return jsonObject.toString();
+        } catch (PackageManager.NameNotFoundException ex) {
+            ex.printStackTrace();
+        } catch (JSONException ex) {
+            ex.printStackTrace();
+        }
+        return "";
     }
 }
