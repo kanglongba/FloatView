@@ -30,6 +30,8 @@
             <data android:mimeType="image/jpeg" />
         </intent>
     </queries>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
     <application
         android:name="com.hangzhou.me.floatview.MyApplication"

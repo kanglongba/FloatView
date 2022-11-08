@@ -12,9 +12,11 @@ import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.Settings;
 import android.security.NetworkSecurityPolicy;
 import android.text.TextUtils;
+import android.text.format.Formatter;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -53,6 +55,7 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
         setContentView(binding.getRoot());
         onClick();
         isCleartextTrafficPermitted();
+        getStorageInfo();
     }
 
     private void onClick() {
@@ -246,5 +249,62 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
             ex.printStackTrace();
         }
         return "";
+    }
+
+    /**
+     * 存储空间：
+     *  Environment.getRootDirectory().getTotalSpace()=6358536192
+     *  Environment.getRootDirectory().getFreeSpace()=75624448
+     *  Environment.getRootDirectory().getAbsolutePath()=/system
+     *  Environment.getStorageDirectory().getTotalSpace()=3421097984
+     *  Environment.getStorageDirectory().getFreeSpace()=3421097984
+     *  Environment.getStorageDirectory().getAbsolutePath()=/storage
+     *  Environment.getExternalStorageDirectory().getTotalSpace()=115008827392
+     *  Environment.getExternalStorageDirectory().getFreeSpace()=98139074560
+     *  Environment.getExternalStorageDirectory().getAbsolutePath()=/storage/emulated/0
+     *  Environment.getDownloadCacheDirectory().getTotalSpace()=115008827392
+     *  Environment.getDownloadCacheDirectory().getFreeSpace()=98139074560
+     *  Environment.getDownloadCacheDirectory().getAbsolutePath()=/data/cache
+     *  Environment.getDataDirectory().getTotalSpace()=115008827392
+     *  Environment.getDataDirectory().getFreeSpace()=98139074560
+     *  Environment.getDataDirectory().getAbsolutePath()=/data
+     *  TotalSpace=115 GB
+     *  FreeSpace=98.14 GB
+     *  Environment.getExternalStorageState()=mounted
+     */
+    private void getStorageInfo() {
+        Log.d("edison", "Environment.getRootDirectory().getTotalSpace()=" + Environment.getRootDirectory().getTotalSpace());
+        Log.d("edison", "Environment.getRootDirectory().getFreeSpace()=" + Environment.getRootDirectory().getFreeSpace());
+        Log.d("edison", "Environment.getRootDirectory().getAbsolutePath()=" + Environment.getRootDirectory().getAbsolutePath());
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            Environment.getStorageDirectory().getTotalSpace();
+            Log.d("edison", "Environment.getStorageDirectory().getTotalSpace()=" + Environment.getStorageDirectory().getTotalSpace());
+            Log.d("edison", "Environment.getStorageDirectory().getFreeSpace()=" + Environment.getStorageDirectory().getFreeSpace());
+            Log.d("edison", "Environment.getStorageDirectory().getAbsolutePath()=" + Environment.getStorageDirectory().getAbsolutePath());
+        }
+        Log.d("edison", "Environment.getExternalStorageDirectory().getTotalSpace()=" + Environment.getExternalStorageDirectory().getTotalSpace());
+        Log.d("edison", "Environment.getExternalStorageDirectory().getFreeSpace()=" + Environment.getExternalStorageDirectory().getFreeSpace());
+        Log.d("edison", "Environment.getExternalStorageDirectory().getAbsolutePath()=" + Environment.getExternalStorageDirectory().getAbsolutePath());
+
+        Log.d("edison", "Environment.getDownloadCacheDirectory().getTotalSpace()=" + Environment.getDownloadCacheDirectory().getTotalSpace());
+        Log.d("edison", "Environment.getDownloadCacheDirectory().getFreeSpace()=" + Environment.getDownloadCacheDirectory().getFreeSpace());
+        Log.d("edison", "Environment.getDownloadCacheDirectory().getAbsolutePath()=" + Environment.getDownloadCacheDirectory().getAbsolutePath());
+        long ts = Environment.getDataDirectory().getTotalSpace();
+        long fs = Environment.getDataDirectory().getFreeSpace();
+        Log.d("edison", "Environment.getDataDirectory().getTotalSpace()=" + ts);
+        Log.d("edison", "Environment.getDataDirectory().getFreeSpace()=" + fs);
+        Log.d("edison", "Environment.getDataDirectory().getAbsolutePath()=" + Environment.getDataDirectory().getAbsolutePath());
+        // 随数字大小变化，可能是KB、MB、GB
+        Log.d("edison", "TotalSpace=" + Formatter.formatFileSize(this, ts));
+        Log.d("edison", "FreeSpace=" + fs/(1024*1024));
+        Log.d("edison", "Environment.getExternalStorageState()=" + Environment.getExternalStorageState());
+    }
+
+    /**
+     * https://developer.android.com/training/basics/network-ops/reading-network-state?hl=zh-cn
+     * https://www.jianshu.com/p/10ed9ae02775
+     */
+    private void getNetworkInfo() {
+
     }
 }
