@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
         setContentView(binding.getRoot());
         onClick();
         isCleartextTrafficPermitted();
-        getStorageInfo();
+//        getStorageInfo();
     }
 
     private void onClick() {

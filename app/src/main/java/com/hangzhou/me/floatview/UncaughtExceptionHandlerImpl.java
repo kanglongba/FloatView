@@ -7,6 +7,7 @@ import android.os.Build;
 import android.os.Environment;
 import android.os.Process;
 import android.text.TextUtils;
+import android.util.Log;
 import android.widget.Toast;
 
 import java.io.File;
@@ -152,7 +153,9 @@ public class UncaughtExceptionHandlerImpl implements Thread.UncaughtExceptionHan
         String fileName = "crash-" + format + ".log";
 
         if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
+            // /data/user/0/com.hangzhou.me.floatview/files/crash
             String path = mContext.getFilesDir() + File.separator + "crash";
+            Log.d("edison", "crashPath=" + path);
             File dir = new File(path);
             if (!dir.exists()) {
                 dir.mkdirs();
