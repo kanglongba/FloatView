@@ -175,6 +175,10 @@ public class AppUtils {
     public static void openApp2(Context context, String packageName) {
         PackageManager packageManager = context.getPackageManager();
         Intent intent = packageManager.getLaunchIntentForPackage(packageName);
+        if (intent == null) {
+            // 没有权限，intent为null
+            return;
+        }
         context.startActivity(intent);
     }
 }

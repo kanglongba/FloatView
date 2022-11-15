@@ -141,9 +141,9 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
      */
     private void installAndLaunchApp() {
 //        AppUtils.installDownloadApk(MainActivity.this, "aweme_aweGW_v1015_230101_3fa1_1668172727.apk");
-        AppUtils.isAppInstalled2(MainActivity.this, "com.kwai.video");
+//        AppUtils.isAppInstalled2(MainActivity.this, "com.kwai.video");
 //        AppUtils.openApp(MainActivity.this, "/storage/emulated/0/Download/qqcomic_android_10.7.8_dm2017_arm32.apk");
-//        AppUtils.openApp2(MainActivity.this, "com.qq.ac.android");
+        AppUtils.openApp2(MainActivity.this, "com.qq.ac.android");
     }
 
     /**
