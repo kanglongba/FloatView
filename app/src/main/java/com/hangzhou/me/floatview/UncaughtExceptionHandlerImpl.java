@@ -43,7 +43,7 @@ public class UncaughtExceptionHandlerImpl implements Thread.UncaughtExceptionHan
     /**
      * 格式化时间，作为Log文件名
      */
-    private DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd-hh-mm-ss");
+    private final DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd-hh-mm-ss");
 
     public static UncaughtExceptionHandlerImpl getInstance() {
         if (mCrashHandler == null) {

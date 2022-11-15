@@ -89,13 +89,16 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
             requestNotificationPermission(MainActivity.this);
         });
         binding.countryCodeBtn.setOnClickListener(v -> {
-            Log.d("edison",  "countryCode=" + TelephonyUtils.getCountryCode(MainActivity.this));
+            Log.d("edison", "countryCode=" + TelephonyUtils.getCountryCode(MainActivity.this));
         });
         binding.queryApp.setOnClickListener(v -> {
             Log.d("edison", "queryApp=" + getAppInfo("com.zhiliaoapp.musically"));
         });
         binding.testCrash.setOnClickListener(v -> {
             Log.d("edison", word.length() + "");
+        });
+        binding.installApk.setOnClickListener(v -> {
+            installAndLaunchApp();
         });
     }
 
@@ -131,11 +134,16 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
     }
 
     /**
-     * https://blog.csdn.net/u011033906/article/details/88399782
-     * https://codeantenna.com/a/UXYmOFnf5J
+     * tiktok:com.zhiliaoapp.musically
+     * 快手：com.kwai.video
+     * 腾讯动漫：com.qq.ac.android
+     * WhatsApp：com.whatsapp
      */
-    private void LaunchApp2() {
-
+    private void installAndLaunchApp() {
+//        AppUtils.installDownloadApk(MainActivity.this, "aweme_aweGW_v1015_230101_3fa1_1668172727.apk");
+        AppUtils.isAppInstalled2(MainActivity.this, "com.kwai.video");
+//        AppUtils.openApp(MainActivity.this, "/storage/emulated/0/Download/qqcomic_android_10.7.8_dm2017_arm32.apk");
+//        AppUtils.openApp2(MainActivity.this, "com.qq.ac.android");
     }
 
     /**
@@ -243,6 +251,7 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
     /**
      * com.applovin.array.apphub.samsung
      * com.zhiliaoapp.musically
+     *
      * @param packageName
      * @return
      */
@@ -265,24 +274,24 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
 
     /**
      * 存储空间：
-     *  Environment.getRootDirectory().getTotalSpace()=6358536192
-     *  Environment.getRootDirectory().getFreeSpace()=75624448
-     *  Environment.getRootDirectory().getAbsolutePath()=/system
-     *  Environment.getStorageDirectory().getTotalSpace()=3421097984
-     *  Environment.getStorageDirectory().getFreeSpace()=3421097984
-     *  Environment.getStorageDirectory().getAbsolutePath()=/storage
-     *  Environment.getExternalStorageDirectory().getTotalSpace()=115008827392
-     *  Environment.getExternalStorageDirectory().getFreeSpace()=98139074560
-     *  Environment.getExternalStorageDirectory().getAbsolutePath()=/storage/emulated/0
-     *  Environment.getDownloadCacheDirectory().getTotalSpace()=115008827392
-     *  Environment.getDownloadCacheDirectory().getFreeSpace()=98139074560
-     *  Environment.getDownloadCacheDirectory().getAbsolutePath()=/data/cache
-     *  Environment.getDataDirectory().getTotalSpace()=115008827392
-     *  Environment.getDataDirectory().getFreeSpace()=98139074560
-     *  Environment.getDataDirectory().getAbsolutePath()=/data
-     *  TotalSpace=115 GB
-     *  FreeSpace=98.14 GB
-     *  Environment.getExternalStorageState()=mounted
+     * Environment.getRootDirectory().getTotalSpace()=6358536192
+     * Environment.getRootDirectory().getFreeSpace()=75624448
+     * Environment.getRootDirectory().getAbsolutePath()=/system
+     * Environment.getStorageDirectory().getTotalSpace()=3421097984
+     * Environment.getStorageDirectory().getFreeSpace()=3421097984
+     * Environment.getStorageDirectory().getAbsolutePath()=/storage
+     * Environment.getExternalStorageDirectory().getTotalSpace()=115008827392
+     * Environment.getExternalStorageDirectory().getFreeSpace()=98139074560
+     * Environment.getExternalStorageDirectory().getAbsolutePath()=/storage/emulated/0
+     * Environment.getDownloadCacheDirectory().getTotalSpace()=115008827392
+     * Environment.getDownloadCacheDirectory().getFreeSpace()=98139074560
+     * Environment.getDownloadCacheDirectory().getAbsolutePath()=/data/cache
+     * Environment.getDataDirectory().getTotalSpace()=115008827392
+     * Environment.getDataDirectory().getFreeSpace()=98139074560
+     * Environment.getDataDirectory().getAbsolutePath()=/data
+     * TotalSpace=115 GB
+     * FreeSpace=98.14 GB
+     * Environment.getExternalStorageState()=mounted
      */
     private void getStorageInfo() {
         Log.d("edison", "Environment.getRootDirectory().getTotalSpace()=" + Environment.getRootDirectory().getTotalSpace());
@@ -308,7 +317,7 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
         Log.d("edison", "Environment.getDataDirectory().getAbsolutePath()=" + Environment.getDataDirectory().getAbsolutePath());
         // 随数字大小变化，可能是KB、MB、GB
         Log.d("edison", "TotalSpace=" + Formatter.formatFileSize(this, ts));
-        Log.d("edison", "FreeSpace=" + fs/(1024*1024));
+        Log.d("edison", "FreeSpace=" + fs / (1024 * 1024));
         Log.d("edison", "Environment.getExternalStorageState()=" + Environment.getExternalStorageState());
     }
 
