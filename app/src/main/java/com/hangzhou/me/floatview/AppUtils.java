@@ -115,7 +115,7 @@ public class AppUtils {
      * <p>
      * 提前内置apk文件：/storage/emulated/0/Download/qqcomic_android_10.7.8_dm2017_arm32.apk
      * 包名：com.qq.ac.android
-     * 启动Activity：com.qq.ac.android.main.MainActivity
+     * 启动Activity：com.qq.ac.android.splash.SplashActivity
      * <p>
      * 结果：安装腾讯动漫，解析软件包错误
      * <p>
