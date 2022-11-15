@@ -17,5 +17,6 @@ public class MyApplication extends Application {
         super.onCreate();
         DebugPanel.init(this);
         DebugPanel.showNotify(getApplicationContext());
+        UncaughtExceptionHandlerImpl.getInstance().init(this);
     }
 }

@@ -47,6 +47,7 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity implements ActivityCompat.OnRequestPermissionsResultCallback {
     public static final String POST_NOTIFICATIONS = "android.permission.POST_NOTIFICATIONS";
     private ActivityMainBinding binding;
+    String word;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,6 +94,9 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
         binding.queryApp.setOnClickListener(v -> {
             Log.d("edison", "queryApp=" + getAppInfo("com.zhiliaoapp.musically"));
         });
+        binding.testCrash.setOnClickListener(v -> {
+            Log.d("edison", word.length() + "");
+        });
     }
 
     /**
@@ -124,6 +128,14 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
 
             startActivity(intent1);
         }
+    }
+
+    /**
+     * https://blog.csdn.net/u011033906/article/details/88399782
+     * https://codeantenna.com/a/UXYmOFnf5J
+     */
+    private void LaunchApp2() {
+
     }
 
     /**
