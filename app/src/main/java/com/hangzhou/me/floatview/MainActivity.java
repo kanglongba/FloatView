@@ -1,6 +1,7 @@
 package com.hangzhou.me.floatview;
 
 import android.app.Activity;
+import android.content.ActivityNotFoundException;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -142,6 +143,8 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
      * WhatsApp：com.whatsapp
      * 拿到 launchable-activity：
      * ./aapt dump badging /Users/edison/Downloads/qqcomic_android_10.7.8_dm2017_arm32.apk
+     * 如果activity不存在，会抛异常：android.content.ActivityNotFoundException: Unable to find explicit activity class
+     * 如果是无法启动的activity，会抛异常：java.lang.SecurityException: Permission Denial: starting Intent { flg=0x10000000 cmp=com.qq.ac.android/.main.MainActivity } from ProcessRecord{1a8b26d 13672:com.hangzhou.me.floatview/u0a450} (pid=13672, uid=10450) not exported from uid 10449
      */
     private void installAndLaunchApp() {
 //        AppUtils.installDownloadApk(MainActivity.this, "aweme_aweGW_v1015_230101_3fa1_1668172727.apk");
@@ -150,8 +153,16 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
 //        AppUtils.openApp2(MainActivity.this, "com.qq.ac.android");
         Intent intent = new Intent();
         intent.setClassName("com.qq.ac.android", "com.qq.ac.android.splash.SplashActivity");
+//        intent.setClassName("com.qq.ac.android", "com.qq.ac.android.splash.SplashActivity2");
+//        intent.setClassName("com.qq.ac.android", "com.qq.ac.android.main.MainActivity");
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(intent);
+        try {
+            startActivity(intent);
+        } catch (ActivityNotFoundException exception) {
+            exception.printStackTrace();
+        } catch (SecurityException exception) {
+            exception.printStackTrace();
+        }
     }
 
     /**
