@@ -32,6 +32,7 @@ import com.hangzhou.me.floatview.databinding.ActivityMainBinding;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -57,6 +58,7 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
         onClick();
         isCleartextTrafficPermitted();
 //        getStorageInfo();
+//        testCompare();
     }
 
     private void onClick() {
@@ -333,5 +335,34 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
      */
     private void getNetworkInfo() {
 
+    }
+
+    public class Person {
+        int age;
+        String name;
+
+        public Person(int age, String name) {
+            this.age = age;
+            this.name = name;
+        }
+
+        @NonNull
+        @Override
+        public String toString() {
+            return "[name="+name+",age="+age+"]";
+        }
+    }
+    private void testCompare() {
+        List<Person> list = new ArrayList<>();
+        list.add(new Person(70,"拜登"));
+        list.add(new Person(60,"川普"));
+        list.add(new Person(80,"查尔斯"));
+        list.add(new Person(50,"马克龙"));
+        // o1-o2 从小到大，o2-o1 从大到小
+
+        list.sort((o1, o2) -> Integer.compare(o2.age,o1.age));
+        list.stream().forEach(person -> {
+            Log.d("edison", person.toString());
+        });
     }
 }
