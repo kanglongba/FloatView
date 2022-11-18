@@ -14,6 +14,8 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
+import android.os.Looper;
 import android.provider.Settings;
 import android.security.NetworkSecurityPolicy;
 import android.text.TextUtils;
@@ -50,6 +52,7 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
     public static final String POST_NOTIFICATIONS = "android.permission.POST_NOTIFICATIONS";
     private ActivityMainBinding binding;
     String word;
+    private final Handler handler = new Handler(Looper.getMainLooper());
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -145,6 +148,7 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
      * ./aapt dump badging /Users/edison/Downloads/qqcomic_android_10.7.8_dm2017_arm32.apk
      * 如果activity不存在，会抛异常：android.content.ActivityNotFoundException: Unable to find explicit activity class
      * 如果是无法启动的activity，会抛异常：java.lang.SecurityException: Permission Denial: starting Intent { flg=0x10000000 cmp=com.qq.ac.android/.main.MainActivity } from ProcessRecord{1a8b26d 13672:com.hangzhou.me.floatview/u0a450} (pid=13672, uid=10450) not exported from uid 10449
+     * 如果App被压到后台，无法打开其他App，但也不会抛出任何异常。
      */
     private void installAndLaunchApp() {
 //        AppUtils.installDownloadApk(MainActivity.this, "aweme_aweGW_v1015_230101_3fa1_1668172727.apk");
@@ -157,7 +161,8 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
 //        intent.setClassName("com.qq.ac.android", "com.qq.ac.android.main.MainActivity");
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         try {
-            startActivity(intent);
+            // 模拟App在后台打开其他App的场景：延时任务+Home键切后台
+            handler.postDelayed(() -> startActivity(intent), 3000);
         } catch (ActivityNotFoundException exception) {
             exception.printStackTrace();
         } catch (SecurityException exception) {
