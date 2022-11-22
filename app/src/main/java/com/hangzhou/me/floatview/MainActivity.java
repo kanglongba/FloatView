@@ -31,6 +31,7 @@ import androidx.core.app.NotificationManagerCompat;
 import com.hangzhou.me.afloat.DebugPanel;
 import com.hangzhou.me.afloat.ToastUtil;
 import com.hangzhou.me.floatview.databinding.ActivityMainBinding;
+import com.hangzhou.me.floatview.sysmonitor.MainActivity2;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -105,6 +106,10 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
         });
         binding.installApk.setOnClickListener(v -> {
             installAndLaunchApp();
+        });
+        binding.showDevice.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, MainActivity2.class);
+            startActivity(intent);
         });
     }
 
