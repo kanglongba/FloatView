@@ -404,6 +404,8 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
      * UI内容不能绘制到状态栏下面
      * <p>
      * 配合使用NoActionBar的主题，去掉actionBar
+     *
+     * 设置透明Activity：android:theme="@android:style/Theme.Translucent.NoTitleBar"
      */
     private void fullScreen() {
         // 将页面的布局显示到状态栏的下面，第二参数decorFitsSystemWindows表示是否沉浸，false 表示沉浸，true表示不沉浸
