@@ -10,6 +10,7 @@ import android.content.pm.ActivityInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -21,12 +22,17 @@ import android.security.NetworkSecurityPolicy;
 import android.text.TextUtils;
 import android.text.format.Formatter;
 import android.util.Log;
+import android.view.View;
+import android.view.WindowManager;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationManagerCompat;
+import androidx.core.view.WindowCompat;
+import androidx.core.view.WindowInsetsCompat;
+import androidx.core.view.WindowInsetsControllerCompat;
 
 import com.hangzhou.me.afloat.DebugPanel;
 import com.hangzhou.me.afloat.ToastUtil;
@@ -57,6 +63,8 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+//        fullScreen();
+//        hideSystemUI();
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         onClick();
@@ -365,20 +373,94 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
         @NonNull
         @Override
         public String toString() {
-            return "[name="+name+",age="+age+"]";
+            return "[name=" + name + ",age=" + age + "]";
         }
     }
+
     private void testCompare() {
         List<Person> list = new ArrayList<>();
-        list.add(new Person(70,"拜登"));
-        list.add(new Person(60,"川普"));
-        list.add(new Person(80,"查尔斯"));
-        list.add(new Person(50,"马克龙"));
+        list.add(new Person(70, "拜登"));
+        list.add(new Person(60, "川普"));
+        list.add(new Person(80, "查尔斯"));
+        list.add(new Person(50, "马克龙"));
         // o1-o2 从小到大，o2-o1 从大到小
 
-        list.sort((o1, o2) -> Integer.compare(o2.age,o1.age));
+        list.sort((o1, o2) -> Integer.compare(o2.age, o1.age));
         list.stream().forEach(person -> {
             Log.d("edison", person.toString());
         });
+    }
+
+    /**
+     * 可以适配刘海、水滴等异形屏
+     * https://developer.android.com/develop/ui/views/layout/immersive
+     * https://juejin.cn/post/7139495545206210590
+     * https://juejin.cn/post/7120815750880690190
+     * <p>
+     * WindowInsetsControllerCompat.BEHAVIOR_SHOW_BARS_BY_TOUCH，触摸导致系统栏出现后不会自动隐藏
+     * WindowInsetsControllerCompat.BEHAVIOR_SHOW_BARS_BY_SWIPE，滑动导致系统栏出现后不会自动隐藏
+     * WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE，触摸或者滑动导致系统栏出现后，会在短时间内自动隐藏
+     * <p>
+     * UI内容不能绘制到状态栏下面
+     * <p>
+     * 配合使用NoActionBar的主题，去掉actionBar
+     */
+    private void fullScreen() {
+        // 将页面的布局显示到状态栏的下面，第二参数decorFitsSystemWindows表示是否沉浸，false 表示沉浸，true表示不沉浸
+        WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
+        // 经过测试，下面两行并没有什么实际效果
+        getWindow().setStatusBarColor(Color.TRANSPARENT);
+        getWindow().setNavigationBarColor(Color.TRANSPARENT);
+        // 隐藏导航栏的分割线
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            getWindow().setNavigationBarDividerColor(Color.TRANSPARENT);
+        }
+        // 适配水滴屏和刘海屏
+        getWindow().getAttributes().layoutInDisplayCutoutMode = WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES;
+
+        WindowInsetsControllerCompat windowInsetsController = WindowCompat.getInsetsController(getWindow(), getWindow().getDecorView());
+        // 设置状态栏的前景色
+        windowInsetsController.setAppearanceLightStatusBars(true);
+        // 设置导航栏的前景色
+        windowInsetsController.setAppearanceLightNavigationBars(true);
+        // 控制系统栏的行为
+        windowInsetsController.setSystemBarsBehavior(WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE);
+        // 隐藏系统栏（状态栏、导航栏、标题栏）
+        windowInsetsController.hide(WindowInsetsCompat.Type.systemBars());
+    }
+
+    /**
+     * 过时的方法，但是连actionBar都给直接隐藏掉了，可以适配刘海、水滴等异形屏
+     * <p>
+     * UI内容能绘制到状态栏下面
+     * <p>
+     * https://developer.android.com/training/system-ui/immersive?hl=zh-cn#java
+     */
+    private void hideSystemUI() {
+        // Enables regular immersive mode.
+        // For "lean back" mode, remove SYSTEM_UI_FLAG_IMMERSIVE.
+        // Or for "sticky immersive," replace it with SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+        View decorView = getWindow().getDecorView();
+        decorView.setSystemUiVisibility(
+                View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+                        // Set the content to appear under the system bars so that the
+                        // content doesn't resize when the system bars hide and show.
+                        | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                        | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                        // Hide the nav bar and status bar
+                        | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                        | View.SYSTEM_UI_FLAG_FULLSCREEN
+                        // 上面的设置就已经开启了沉浸式全屏，下面这两行设置没有任何效果
+                        | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+                        | View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
+        );
+
+        // 适配水滴屏和刘海屏
+        getWindow().getAttributes().layoutInDisplayCutoutMode = WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES;
+
+        // 设置沉浸式全屏效果以后，下面的代码没有任何效果了
+        getWindow().setStatusBarColor(Color.TRANSPARENT);
+        getWindow().setNavigationBarColor(Color.TRANSPARENT);
     }
 }
