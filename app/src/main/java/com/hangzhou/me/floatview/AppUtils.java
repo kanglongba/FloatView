@@ -92,20 +92,21 @@ public class AppUtils {
             return;
         }
         Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.addCategory(Intent.CATEGORY_DEFAULT);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         //判断是否是AndroidN以及更高的版本
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            Uri contentUri = FileProvider.getUriForFile(context, BuildConfig.APPLICATION_ID, apk);
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            Uri contentUri = FileProvider.getUriForFile(context, context.getPackageName() + ".fileProvider", apk);
             intent.setDataAndType(contentUri, "application/vnd.android.package-archive");
         } else {
             intent.setDataAndType(Uri.parse("file://" + filePath), "application/vnd.android.package-archive");
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         }
         context.startActivity(intent);
     }
 
     /**
-     * 安装下载目录的apk
+     * 安装下载目录的apk：https://blog.csdn.net/qq_37858386/article/details/123075426
      * 遇到异常：android.os.FileUriExposedException
      * 原因：Android N及以上，暴露文件Uri（文件Uri离开应用进程）时会抛异常
      * 处理办法：
@@ -117,10 +118,19 @@ public class AppUtils {
      * 包名：com.qq.ac.android
      * 启动Activity：com.qq.ac.android.splash.SplashActivity
      * <p>
-     * 结果：安装腾讯动漫，解析软件包错误
+     * 结果：安装腾讯动漫，解析软件包错误(There was a problem parsing the package)
      * <p>
      * 内置抖音apk文件：/storage/emulated/0/Download/aweme_aweGW_v1015_230101_3fa1_1668172727.apk
-     * 结果：安装抖音，解析软件包错误
+     * 结果：安装抖音，解析软件包错误(There was a problem parsing the package)
+     * <p>
+     * 产生 There was a problem parsing the package 错误的原因：
+     * 1.应用没有读写权限，读取不了APK文件
+     * 2.Android R以上需要申请：android.permission.MANAGE_EXTERNAL_STORAGE 权限
+     * <p>
+     * 要想安装APK，以下权限一个都不能少
+     * 1.android.permission.READ_EXTERNAL_STORAGE
+     * 2.android.permission.REQUEST_INSTALL_PACKAGES
+     * 3.android.permission.MANAGE_EXTERNAL_STORAGE
      *
      * @param context
      * @param apkName apk文件的名字
@@ -133,14 +143,15 @@ public class AppUtils {
             return;
         }
         Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.addCategory(Intent.CATEGORY_DEFAULT);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         //判断是否是AndroidN以及更高的版本
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            Uri contentUri = FileProvider.getUriForFile(context, BuildConfig.APPLICATION_ID, apk);
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            Uri contentUri = FileProvider.getUriForFile(context, context.getPackageName() + ".fileProvider", apk);
             intent.setDataAndType(contentUri, "application/vnd.android.package-archive");
         } else {
             intent.setDataAndType(Uri.fromFile(apk), "application/vnd.android.package-archive");
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         }
         context.startActivity(intent);
     }

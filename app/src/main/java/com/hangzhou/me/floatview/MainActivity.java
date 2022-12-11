@@ -73,6 +73,7 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
 //        getStorageInfo();
 //        testCompare();
 //        testLogger();
+//        requestInstallPermission();
     }
 
     private void onClick() {
@@ -161,7 +162,12 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
      * 如果App被压到后台，无法打开其他App，但也不会抛出任何异常。
      */
     private void installAndLaunchApp() {
-//        AppUtils.installDownloadApk(MainActivity.this, "aweme_aweGW_v1015_230101_3fa1_1668172727.apk");
+//        openApp();
+        installApk();
+    }
+
+    private void openApp() {
+        //        AppUtils.installDownloadApk(MainActivity.this, "aweme_aweGW_v1015_230101_3fa1_1668172727.apk");
 //        AppUtils.isAppInstalled2(MainActivity.this, "com.kwai.video");
 //        AppUtils.openApp(MainActivity.this, "/storage/emulated/0/Download/qqcomic_android_10.7.8_dm2017_arm32.apk");
 //        AppUtils.openApp2(MainActivity.this, "com.qq.ac.android");
@@ -179,6 +185,26 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
             exception.printStackTrace();
         }
     }
+
+    /**
+     * 检测是否有安装权限
+     */
+    private void requestInstallPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            if (!getPackageManager().canRequestPackageInstalls()) {
+                Intent intent = new Intent(Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES);
+                intent.setData(Uri.parse(String.format("package:%s", getPackageName())));
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+            }
+        }
+    }
+
+    private void installApk() {
+        AppUtils.installDownloadApk(MainActivity.this, "aweme_aweGW_v1015_230101_3fa1_1668172727.apk");
+    }
+
+
 
     /**
      * 打开软件设置页面
