@@ -37,6 +37,7 @@ import androidx.core.view.WindowInsetsControllerCompat;
 import com.hangzhou.me.afloat.DebugPanel;
 import com.hangzhou.me.afloat.ToastUtil;
 import com.hangzhou.me.floatview.databinding.ActivityMainBinding;
+import com.orhanobut.logger.Logger;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -71,6 +72,7 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
         isCleartextTrafficPermitted();
 //        getStorageInfo();
 //        testCompare();
+//        testLogger();
     }
 
     private void onClick() {
@@ -465,4 +467,53 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
         getWindow().setStatusBarColor(Color.TRANSPARENT);
         getWindow().setNavigationBarColor(Color.TRANSPARENT);
     }
+
+    private void testLogger() {
+        Logger.t("MyTag").d("MainActivity %s", "你好");
+        List<String> list = new ArrayList<>();
+        list.add("Messi");
+        list.add("内马尔");
+        Logger.t("歌名").d("list=%s %d",list,200);
+
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("name", "罗纳尔多");
+            jsonObject.put("职业", "足球运动员");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        Logger.json(jsonObject.toString());
+
+        Logger.xml(xml);
+
+        Logger.wtf("wtf %s %d", "什么意思", 100);
+    }
+
+    public String xml  = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n" +
+            "<paths>\n" +
+            "    <!-- path：需要临时授权访问的路径（.代表所有路径）, name：就是你给这个访问路径起个名字 -->\n" +
+            "    <external-path\n" +
+            "        name=\"external_storage_root\"\n" +
+            "        path=\".\" />\n" +
+            "    <!--1、对应内部内存卡根目录：Context.getFileDir()-->\n" +
+            "    <files-path\n" +
+            "        name=\"int_root\"\n" +
+            "        path=\"/\" />\n" +
+            "    <!--2、对应应用默认缓存根目录：Context.getCacheDir()-->\n" +
+            "    <cache-path\n" +
+            "        name=\"app_cache\"\n" +
+            "        path=\"/\" />\n" +
+            "    <!--3、对应外部内存卡根目录：Environment.getExternalStorageDirectory()-->\n" +
+            "    <external-path\n" +
+            "        name=\"ext_root\"\n" +
+            "        path=\"/\" />\n" +
+            "    <!--4、对应外部内存卡根目录下的APP公共目录：Context.getExternalFileDir(String)-->\n" +
+            "    <external-files-path\n" +
+            "        name=\"ext_pub\"\n" +
+            "        path=\"/\" />\n" +
+            "    <!--5、对应外部内存卡根目录下的APP缓存目录：Context.getExternalCacheDir()-->\n" +
+            "    <external-cache-path\n" +
+            "        name=\"ext_cache\"\n" +
+            "        path=\"/\" />\n" +
+            "</paths>";
 }
