@@ -1,5 +1,6 @@
 package com.hangzhou.me.floatview;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.ComponentName;
@@ -60,6 +61,8 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
     private ActivityMainBinding binding;
     String word;
     private final Handler handler = new Handler(Looper.getMainLooper());
+    private static final int REQUEST_CODE_INSTALL = 22021211;
+    private static final int REQUEST_CODE_STORAGE = 20221212;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -167,7 +170,6 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
     }
 
     private void openApp() {
-        //        AppUtils.installDownloadApk(MainActivity.this, "aweme_aweGW_v1015_230101_3fa1_1668172727.apk");
 //        AppUtils.isAppInstalled2(MainActivity.this, "com.kwai.video");
 //        AppUtils.openApp(MainActivity.this, "/storage/emulated/0/Download/qqcomic_android_10.7.8_dm2017_arm32.apk");
 //        AppUtils.openApp2(MainActivity.this, "com.qq.ac.android");
@@ -187,7 +189,8 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
     }
 
     /**
-     * 检测是否有安装权限
+     * 检测是否有安装权限.
+     * 安装权限是特殊权限，不能通过ActivityCompat.requestPermissions获取，只能跳转到设置页面主动开启。
      */
     private void requestInstallPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -195,15 +198,50 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
                 Intent intent = new Intent(Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES);
                 intent.setData(Uri.parse(String.format("package:%s", getPackageName())));
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
+                startActivityForResult(intent, REQUEST_CODE_INSTALL);
+                //下面申请方式无效
+                //ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.REQUEST_INSTALL_PACKAGES}, REQUEST_CODE_INSTALL);
             }
         }
     }
 
-    private void installApk() {
-        AppUtils.installDownloadApk(MainActivity.this, "aweme_aweGW_v1015_230101_3fa1_1668172727.apk");
+    /**
+     * 动态申请Storage权限
+     * https://developer.android.com/training/permissions/requesting?hl=zh-cn
+     * https://juejin.cn/post/7053453973990146056
+     * 在Android 6.0以前仅需要在Manifest文件中申请 READ_EXTERNAL_STORAGE 和 WRITE_EXTERNAL_STORAGE 权限，就可以获得全部的存储权限
+     * 在Android 6.0及以后，需要在代码中动态申请 READ_EXTERNAL_STORAGE 和 WRITE_EXTERNAL_STORAGE 权限，就可以获得全部的存储权限
+     * 在Android 11及以后，Google把媒体文件存储权限和全部文件存储权限分开了。媒体文件存储权限，通过动态申请 READ_EXTERNAL_STORAGE 和 WRITE_EXTERNAL_STORAGE 获得。全部文件存储权限（MANAGE_EXTERNAL_STORAGE）需要跳转到Setting页面，主动开启才能获得。
+     * 只有媒体文件存储权限，安装apk时，会报 There was a problem parsing the package 错误。
+     */
+    private void requestStoragePermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            // 先判断有没有权限
+            if (Environment.isExternalStorageManager()) {
+                ToastUtil.show("已获取到存储权限");
+            } else {
+                Intent intent = new Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION);
+                intent.setData(Uri.parse("package:" + getApplication().getPackageName()));
+                startActivityForResult(intent, REQUEST_CODE_STORAGE);
+            }
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED &&
+                    ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+                ToastUtil.show("已获取到存储权限");
+            } else {
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_CODE_STORAGE);
+            }
+        } else {
+            ToastUtil.show("已获取到存储权限");
+        }
     }
 
+    private void installApk() {
+//        requestStoragePermission();
+        requestInstallPermission();
+//        PermissionUtils.permission(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.MANAGE_EXTERNAL_STORAGE, Manifest.permission.REQUEST_INSTALL_PACKAGES).request();
+//        AppUtils.installDownloadApk(MainActivity.this, "aweme_aweGW_v1015_230101_3fa1_1668172727.apk");
+    }
 
 
     /**
@@ -257,7 +295,7 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
     }
 
     /**
-     * 接收设置页面的返回通知
+     * 接收设置页面的返回通知。动态申请权限，接收来自系统设置页面的授权结果。
      *
      * @param requestCode
      * @param resultCode
@@ -271,11 +309,23 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
             boolean enabled = NotificationManagerCompat.from(MainActivity.this).areNotificationsEnabled();
             Log.d("edison", "resultCode=" + resultCode + (enabled ? ", 通知开关打开" : "，通知开关关闭"));
             ToastUtil.show(enabled ? "通知开关打开" : "通知开关关闭");
+        } else if (requestCode == REQUEST_CODE_STORAGE && Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            if (Environment.isExternalStorageManager()) {
+                ToastUtil.show("存储权限获取成功1");
+            } else {
+                ToastUtil.show("存储权限获取失败1");
+            }
+        } else if (requestCode == REQUEST_CODE_INSTALL) {
+            if (getPackageManager().canRequestPackageInstalls()) {
+                ToastUtil.show("安装权限获取成功1");
+            } else {
+                ToastUtil.show("安装权限获取失败1");
+            }
         }
     }
 
     /**
-     * 接收ActivityCompat.requestPermissions()方法的授权结果
+     * 接收ActivityCompat.requestPermissions()方法的授权结果。动态申请权限，接收来自授权弹窗的授权结果。
      *
      * @param requestCode
      * @param permissions
@@ -293,6 +343,19 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
                 //除了明确拒绝，用户把授权弹窗滑走，也会收到拒绝
                 Log.d("edison", "用户拒绝通知权限");
                 ToastUtil.show("用户拒绝通知权限");
+            }
+        } else if (requestCode == REQUEST_CODE_STORAGE) {
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED &&
+                    ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+                ToastUtil.show("存储权限获取成功2");
+            } else {
+                ToastUtil.show("存储权限获取失败2");
+            }
+        } else if (requestCode == REQUEST_CODE_INSTALL) {
+            if (getPackageManager().canRequestPackageInstalls()) {
+                ToastUtil.show("安装权限获取成功2");
+            } else {
+                ToastUtil.show("安装权限获取失败2");
             }
         }
     }
@@ -432,7 +495,7 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
      * UI内容不能绘制到状态栏下面
      * <p>
      * 配合使用NoActionBar的主题，去掉actionBar
-     *
+     * <p>
      * 设置透明Activity：android:theme="@android:style/Theme.Translucent.NoTitleBar"
      */
     private void fullScreen() {
@@ -499,7 +562,7 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
         List<String> list = new ArrayList<>();
         list.add("Messi");
         list.add("内马尔");
-        Logger.t("歌名").d("list=%s %d",list,200);
+        Logger.t("歌名").d("list=%s %d", list, 200);
 
         JSONObject jsonObject = new JSONObject();
         try {
@@ -515,7 +578,7 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
         Logger.wtf("wtf %s %d", "什么意思", 100);
     }
 
-    public String xml  = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n" +
+    public String xml = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n" +
             "<paths>\n" +
             "    <!-- path：需要临时授权访问的路径（.代表所有路径）, name：就是你给这个访问路径起个名字 -->\n" +
             "    <external-path\n" +

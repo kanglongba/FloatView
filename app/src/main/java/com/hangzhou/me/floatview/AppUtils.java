@@ -128,9 +128,9 @@ public class AppUtils {
      * 2.Android R以上需要申请：android.permission.MANAGE_EXTERNAL_STORAGE 权限
      * <p>
      * 要想安装APK，以下权限一个都不能少
-     * 1.android.permission.READ_EXTERNAL_STORAGE
-     * 2.android.permission.REQUEST_INSTALL_PACKAGES
-     * 3.android.permission.MANAGE_EXTERNAL_STORAGE
+     * 1.android.permission.READ_EXTERNAL_STORAGE、android.permission.WRITE_EXTERNAL_STORAGE (Android 11以下)
+     * 2.android.permission.MANAGE_EXTERNAL_STORAGE （Android 11及以上）
+     * 3.android.permission.REQUEST_INSTALL_PACKAGES (Android 8.0及以上，这个权限可以不用在代码中申请，当执行安装代码时，系统会自动弹出授权弹窗）
      *
      * @param context
      * @param apkName apk文件的名字

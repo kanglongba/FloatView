@@ -47,7 +47,8 @@
         android:networkSecurityConfig="@xml/network_security_config"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.FloatView">
+        android:theme="@style/Theme.FloatView"
+        android:requestLegacyExternalStorage="true">
         <activity
             android:name="com.hangzhou.me.floatview.MainActivity"
             android:exported="true">
