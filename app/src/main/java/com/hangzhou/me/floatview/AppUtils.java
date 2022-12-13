@@ -157,10 +157,10 @@ public class AppUtils {
     }
 
     /**
-     * 打开App
+     * 打开App.
      * 从apk包中解析出packageName，然后利用packageName获取到启动Intent
      * <p>
-     * 结果：腾讯动漫和抖音的软件包无法解析
+     * 遇到的问题：腾讯动漫和抖音的软件包无法解析。原因最后找到了：因为没有获取到文件的访问权限。授权存储权限以后，就能正常打开了。
      *
      * @param context
      * @param apkPath apk文件的路径

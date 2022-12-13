@@ -165,21 +165,26 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
      * 如果App被压到后台，无法打开其他App，但也不会抛出任何异常。
      */
     private void installAndLaunchApp() {
-//        openApp();
-        installApk();
+        openApp();
+//        installApk();
     }
 
+    /**
+     * 能打开 exported 的Activity，非 exported 的Activity，会抛异常：java.lang.SecurityException: Permission Denial
+     */
     private void openApp() {
 //        AppUtils.isAppInstalled2(MainActivity.this, "com.kwai.video");
 //        AppUtils.openApp(MainActivity.this, "/storage/emulated/0/Download/qqcomic_android_10.7.8_dm2017_arm32.apk");
 //        AppUtils.openApp2(MainActivity.this, "com.qq.ac.android");
+
         Intent intent = new Intent();
         intent.setClassName("com.qq.ac.android", "com.qq.ac.android.splash.SplashActivity");
-//        intent.setClassName("com.qq.ac.android", "com.qq.ac.android.splash.SplashActivity2");
-//        intent.setClassName("com.qq.ac.android", "com.qq.ac.android.main.MainActivity");
+//        intent.setClassName("com.qq.ac.android", "com.tencent.android.tpush.InnerTpnsActivity"); // Permission Denial, not exported
+//        intent.setClassName("com.qq.ac.android", "com.qq.ac.android.main.MainActivity"); // Permission Denial, not exported
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         try {
             // 模拟App在后台打开其他App的场景：延时任务+Home键切后台
+            // 经过测试，App切换到后台以后，不能打开其他App
             handler.postDelayed(() -> startActivity(intent), 3000);
         } catch (ActivityNotFoundException exception) {
             exception.printStackTrace();
@@ -236,11 +241,15 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
         }
     }
 
+    /**
+     * qq动漫：qqcomic_android_10.7.8_dm2017_arm32.apk
+     * TikTok：aweme_aweGW_v1015_230101_3fa1_1668172727.apk
+     */
     private void installApk() {
 //        requestStoragePermission();
-        requestInstallPermission();
+//        requestInstallPermission();
 //        PermissionUtils.permission(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.MANAGE_EXTERNAL_STORAGE, Manifest.permission.REQUEST_INSTALL_PACKAGES).request();
-//        AppUtils.installDownloadApk(MainActivity.this, "aweme_aweGW_v1015_230101_3fa1_1668172727.apk");
+        AppUtils.installDownloadApk(MainActivity.this, "aweme_aweGW_v1015_230101_3fa1_1668172727.apk");
     }
 
 
