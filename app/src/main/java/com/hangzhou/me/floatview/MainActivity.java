@@ -45,7 +45,11 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.function.ToIntFunction;
 
 /**
  * Android 13 Notification适配：
@@ -165,8 +169,8 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
      * 如果App被压到后台，无法打开其他App，但也不会抛出任何异常。
      */
     private void installAndLaunchApp() {
-        openApp();
-//        installApk();
+//        openApp();
+        installApk();
     }
 
     /**
@@ -244,12 +248,14 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
     /**
      * qq动漫：qqcomic_android_10.7.8_dm2017_arm32.apk
      * TikTok：aweme_aweGW_v1015_230101_3fa1_1668172727.apk
+     * 某个游戏：com.mistplay.mistplay_11947427v_arm64-v8a_0dpi_21aal.zip，使用系统安装器无法安装zip格式的安装包，需要使用 PackageInstaller
+     * 使用 PackageInstaller 可以达到静默安装的效果，但是需要系统签名和系统级权限，所以这种方式只适合预装应用
      */
     private void installApk() {
 //        requestStoragePermission();
 //        requestInstallPermission();
 //        PermissionUtils.permission(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.MANAGE_EXTERNAL_STORAGE, Manifest.permission.REQUEST_INSTALL_PACKAGES).request();
-        AppUtils.installDownloadApk(MainActivity.this, "aweme_aweGW_v1015_230101_3fa1_1668172727.apk");
+        AppUtils.installDownloadApk(MainActivity.this, "com.mistplay.mistplay_11947427v_arm64-v8a_0dpi_21aal.zip");
     }
 
 
@@ -424,6 +430,8 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
      * TotalSpace=115 GB
      * FreeSpace=98.14 GB
      * Environment.getExternalStorageState()=mounted
+     * context.getExternalFilesDir(null)=/storage/emulated/0/Android/data/com.hangzhou.me.floatview/files
+     * ontext.getFilesDir()=/data/user/0/com.hangzhou.me.floatview/files
      */
     private void getStorageInfo() {
         Log.d("edison", "Environment.getRootDirectory().getTotalSpace()=" + Environment.getRootDirectory().getTotalSpace());
@@ -451,6 +459,8 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
         Log.d("edison", "TotalSpace=" + Formatter.formatFileSize(this, ts));
         Log.d("edison", "FreeSpace=" + fs / (1024 * 1024));
         Log.d("edison", "Environment.getExternalStorageState()=" + Environment.getExternalStorageState());
+        Log.d("edison", "context.getExternalFilesDir(null)=" + getExternalFilesDir(null).getAbsolutePath());
+        Log.d("edison", "context.getFilesDir()=" + getFilesDir().getAbsolutePath());
     }
 
     /**
@@ -489,6 +499,14 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
         list.stream().forEach(person -> {
             Log.d("edison", person.toString());
         });
+
+        int result = list.stream().mapToInt(new ToIntFunction<Person>() {
+            @Override
+            public int applyAsInt(Person value) {
+                return value.age;
+            }
+        }).sum();
+        Log.d("eddison", "result=" + result);
     }
 
     /**
@@ -572,6 +590,19 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
         list.add("Messi");
         list.add("内马尔");
         Logger.t("歌名").d("list=%s %d", list, 200);
+        String[] args = new String[]{"梅西", "内马尔", "姆巴佩"};
+        Logger.d(args);
+        HashMap<String, String> map = new HashMap<>();
+        map.put("梅西", "阿根廷");
+        map.put("内马尔", "巴西");
+        map.put("姆巴佩", "法国");
+        Logger.d(map);
+        Set<String> set = new HashSet<String>();
+        set.add("阿根廷");
+        set.add("巴西");
+        set.add("法国");
+        Logger.d(set);
+
 
         JSONObject jsonObject = new JSONObject();
         try {
