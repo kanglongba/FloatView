@@ -159,6 +159,12 @@
 -keep public class com.google.vending.licensing.ILicensingService
 -keep public class com.android.vending.licensing.ILicensingService
 
+# AndroidUtilCode
+-keep class com.blankj.utilcode.** { *; }
+
+# PRDownloader
+-keep class com.downloader.** { *; }
+
 # Retrofit
 -dontwarn retrofit2.**
 -keep class retrofit2.** { *; }
