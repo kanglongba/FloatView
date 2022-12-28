@@ -46,6 +46,11 @@ public class InstalledAppsAdapter extends RecyclerView.Adapter<InstalledAppsAdap
         return installedApps.size();
     }
 
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
+
     public List<String> getCheckedApp() {
         return installedApps.stream().filter(it -> it.isChecked()).map(it -> it.getPackageName()).collect(Collectors.toList());
     }
