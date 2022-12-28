@@ -192,4 +192,18 @@ public class AppUtils {
         }
         context.startActivity(intent);
     }
+
+    /**
+     * https://www.jianshu.com/p/56f606da9f77
+     * https://blog.csdn.net/ta_ab/article/details/77949348
+     * @param context
+     * @param packageName
+     */
+    public static void uninstallApp(Context context, String packageName) {
+        Intent intent = new Intent();
+        intent.setAction(Intent.ACTION_DELETE);
+        intent.setData(Uri.parse("package:" + packageName));
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(intent);
+    }
 }
